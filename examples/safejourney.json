@@ -1,0 +1,11 @@
+{
+  "queueWrapperMethods": [
+    "sync",
+    "async", 
+    "differentAsyncHelper"
+  ],
+  "excludePatterns": [
+    "Tests",
+    "Generated"
+  ]
+}

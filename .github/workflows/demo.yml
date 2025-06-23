@@ -1,0 +1,85 @@
+name: Demo SafeJourney Action
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      target_path:
+        description: "Path to check (directory or file)"
+        required: false
+        default: "examples/"
+        type: string
+      fail-on-errors:
+        description: "Fail the workflow if errors are found"
+        required: false
+        default: true
+        type: boolean
+      fail-on-warnings:
+        description: "Fail the workflow if warnings are found"
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  # Manual demo job - runs when triggered from GitHub Actions UI
+  demo-manual:
+    name: Manual Demo (UI Triggered)
+    runs-on: macos-latest
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run SafeJourney Check with Custom Inputs
+        uses: ./
+        with:
+          path: ${{ inputs.target_path }}
+          fail-on-error: ${{ inputs.fail-on-errors }}
+          fail-on-warning: ${{ inputs.fail-on-warnings }}
+
+  # Basic demo - shows standard usage
+  demo-basic:
+    name: Basic Usage Demo
+    runs-on: macos-latest
+    if: github.event_name != 'workflow_dispatch'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run SafeJourney Check on Examples
+        uses: ./
+        with:
+          path: "examples/"
+          # It will still log the violation
+          # but won't fail to avoid actual repo action failure
+          # while it is failing on purpose for the demo
+          fail-on-error: false
+          fail-on-warning: false
+
+  # Matrix demo - shows checking multiple paths
+  demo-multiple-paths:
+    name: Multiple Paths Demo
+    runs-on: macos-latest
+    if: github.event_name != 'workflow_dispatch'
+    strategy:
+      matrix:
+        path:
+          [
+            "Sources/",
+            "examples/GoodExample.swift",
+            "examples/BadExample.swift",
+          ]
+      fail-fast: false # Continue testing other paths even if one fails
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check ${{ matrix.path }}
+        uses: ./
+        with:
+          path: ${{ matrix.path }}
+          fail-on-error: false # Don't fail for demo purposes
+          fail-on-warning: false
