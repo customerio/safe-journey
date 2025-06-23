@@ -1,0 +1,21 @@
+{
+  "excludePatterns": [
+    "Tests",
+    "test",
+    "Test", 
+    "Mock",
+    "mock",
+    "scripts"
+  ],
+  "queueWrapperMethods": [
+    "sync",
+    "async",
+    "asyncUtility",
+    "syncUtility",
+    "executeAsync",
+    "executeSync",
+    "performAsync",
+    "performSync",
+    "differentAsyncHelper"
+  ]
+}
