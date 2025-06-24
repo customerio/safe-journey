@@ -12,12 +12,12 @@ on:
         required: false
         default: "examples/"
         type: string
-      fail_on_errors:
+      fail-on-error:
         description: "Fail the workflow if errors are found"
         required: false
         default: true
         type: boolean
-      fail_on_warnings:
+      fail-on-warning:
         description: "Fail the workflow if warnings are found"
         required: false
         default: false
@@ -37,8 +37,8 @@ jobs:
         uses: ./
         with:
           path: ${{ inputs.target_path }}
-          fail-on-error: ${{ inputs.fail_on_errors }}
-          fail-on-warning: ${{ inputs.fail_on_warnings }}
+          fail-on-error: ${{ inputs.fail-on-error }}
+          fail-on-warning: ${{ inputs.fail-on-warning }}
 
   # Basic demo - shows standard usage
   demo-basic:
